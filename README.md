@@ -13,7 +13,7 @@ This Password Checker is a simple Go program designed to evaluate the strength o
 1. Ensure you have Go installed on your machine.
 2. Clone this repository:
 3. Copy code
-```git clone https://github.com/yourusername/password-checker.git```
+```git clone https://github.com/MartinDeBeer/passCheck```
 4. Navigate to the project directory:
 ```cd password-checker```
 
@@ -32,9 +32,8 @@ This Password Checker is a simple Go program designed to evaluate the strength o
 ```
 Enter password:
 P@ssw0rd123
-Character set size: 94
-Number of possibilities: 7.537181102180347e+17
-Time to crack: 216118940 years, 2593427280 months, 11287205205 weeks, 79107182040 days, 1898572368960 hours, 113914342137600 minutes, 6834860528256000 seconds
+94 5.062982072492058e+21
+Time to crack: 58 seconds, 0 minutes, 4 hours, 4 days, 1 weeks, 8 months, 145659 years to crack!
 ```
 
 ## Explanation
