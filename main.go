@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"math"
 	"os"
 	"regexp"
@@ -62,7 +63,10 @@ func convertSeconds(seconds int) TimeDuration {
 func getPassword() (int, int, int, int, int, int, int) {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Enter password: ")
-	password, _ := reader.ReadString('\n')
+	password, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
 	passLength := len(strings.TrimSpace(password))
 	passNumsPattern := (`[0-9]+`)
 	passLowerPattern := (`[a-z]+`)
@@ -77,39 +81,27 @@ func getPassword() (int, int, int, int, int, int, int) {
 	lowerCount := 26
 	specialCount := 32
 	numsCount := 10
-	fmt.Println(passLength)
+	charset_size := 0
 	hashesPerSecond := 1102200000
-	if passNums.MatchString(password) && !passLower.MatchString(password) && !passUpper.MatchString(password) && !passSpecial.MatchString(password) {
-		numPossibilities := math.Pow(float64(numsCount), float64(passLength))
-		fmt.Println(numPossibilities)
-		timeToCrack = float64(numPossibilities) / float64(hashesPerSecond)
-		duration = convertSeconds(int(timeToCrack))
+	if passNums.MatchString(password) {
+		charset_size += numsCount
 	}
-	if !passNums.MatchString(password) && passLower.MatchString(password) && !passUpper.MatchString(password) && !passSpecial.MatchString(password) {
-		lowerPossibilities := math.Pow(float64(lowerCount), float64(passLength))
-		timeToCrack = float64(lowerPossibilities) / float64(hashesPerSecond)
-		duration = convertSeconds(int(timeToCrack))
+	if passLower.MatchString(password) {
+		charset_size += lowerCount
 
 	}
-	if !passNums.MatchString(password) && !passLower.MatchString(password) && passUpper.MatchString(password) && !passSpecial.MatchString(password) {
-		lowerPossibilities := math.Pow(float64(lowerCount), float64(passLength))
-		timeToCrack = float64(lowerPossibilities) / float64(hashesPerSecond)
-		duration = convertSeconds(int(timeToCrack))
+	if passUpper.MatchString(password) {
+		charset_size += lowerCount
 
 	}
-	if !passNums.MatchString(password) && !passLower.MatchString(password) && !passUpper.MatchString(password) && passSpecial.MatchString(password) {
-		lowerPossibilities := math.Pow(float64(specialCount), float64(passLength))
-		timeToCrack = float64(lowerPossibilities) / float64(hashesPerSecond)
-		duration = convertSeconds(int(timeToCrack))
+	if passSpecial.MatchString(password) {
+		charset_size += specialCount
 
 	}
-	if passNums.MatchString(password) && passLower.MatchString(password) && passUpper.MatchString(password) && passSpecial.MatchString(password) {
-		lowerPossibilities := math.Pow((float64(lowerCount)*2)+float64(specialCount)+float64(numsCount), float64(passLength))
-		fmt.Println(lowerPossibilities)
-		timeToCrack = float64(lowerPossibilities) / float64(hashesPerSecond)
-		duration = convertSeconds(int(timeToCrack))
-
-	}
+	numPossibilities := math.Pow(float64(charset_size), float64(passLength))
+	timeToCrack = float64(numPossibilities) / float64(hashesPerSecond)
+	duration = convertSeconds(int(timeToCrack))
+	fmt.Println(charset_size, numPossibilities)
 	return duration.Days, duration.Hours, duration.Months, duration.Weeks, duration.Years, duration.Seconds, duration.Minutes
 }
 func main() {
