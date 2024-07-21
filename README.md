@@ -13,7 +13,7 @@ This Password Checker is a simple Go program designed to evaluate the strength o
 1. Ensure you have Go installed on your machine.
 2. Clone this repository:
 3. Copy code
-```git clone https://github.com/yourusername/password-checker.git```
+```git clone https://github.com/MartinDeBeer/passCheck```
 4. Navigate to the project directory:
 ```cd password-checker```
 
